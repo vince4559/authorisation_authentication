@@ -58,9 +58,9 @@ exports.login = async (req, res) => {
         // saving refreshtoken with current user
         foundUser.refreshToken = refreshToken;
         const result = await foundUser.save();
-        console.log(result);
+        // console.log(result);
         
-        res.cookie("jwt", refreshToken, {httpOnly:true, sameSite:'none',secure:true, maxAge:24 *60*60*100});
+        res.cookie("jwt", refreshToken, {httpOnly:true, sameSite:'none',secure:true, maxAge:24 *60*60*100}); //secure:true
         res.json({accessToken})
     }else{
         res.status(401).json({"message":'incorrect password'})
@@ -73,12 +73,12 @@ exports.refresh_Token = async (req, res) => {
     if(!cookies?.jwt) return res.sendStatus(401); //unauthorised
 
     const refreshToken = cookies.jwt;
-    const foundUser = await userModel.findOne({refreshToken});
+    const foundUser = await userModel.findOne({refreshToken}).exec() 
     if(!foundUser) return res.sendStatus(403); // forbiden
 
     // evaluate jwt
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-        if(err || foundUser.username !== decoded.username) return res.sendStatus(403);
+        if(err || foundUser.username !== decoded.username) return res.sendStatus(403); //
 
         const roles = Object.values(foundUser.roles);
         const accessToken = jwt.sign(
@@ -111,6 +111,6 @@ exports.logOut = async (req, res) => {
     foundUser.refreshToken = '';
     const result = await foundUser.save();
     console.log(result);
-    res.clearCookie('jwt',{httpOnly:true, sameSite:'none', secure:true});
+    res.clearCookie('jwt',{httpOnly:true, sameSite:'none'}); //secure:true
     res.sendStatus(204);
 }

@@ -41,7 +41,7 @@ app.use('/auth',userRoute );
 
 // route that needs to be verified with  jwt token
 app.use(verifyJWT);
-app.use('/api', employeeRouter);
+app.use('/auth', employeeRouter);
 
 
 app.use(errorHandler)
