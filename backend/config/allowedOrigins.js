@@ -1,4 +1,4 @@
-const allowedOrigins = ['http://localhost:5173']; 
+const allowedOrigins = ["https://authorisation-authentication-pa7xbj1ki-vince4559.vercel.app"]; 
 
 module.exports = allowedOrigins
 
