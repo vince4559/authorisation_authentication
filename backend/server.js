@@ -37,11 +37,11 @@ app.get('/', (req, res) => {
     res.send('Welcome TO Backend')
 });
 
-app.use('/auth',userRoute );
+app.use(userRoute );
 
 // route that needs to be verified with  jwt token
 app.use(verifyJWT);
-app.use('/auth', employeeRouter);
+app.use(employeeRouter);
 
 
 app.use(errorHandler)
